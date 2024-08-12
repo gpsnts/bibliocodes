@@ -4,7 +4,7 @@ const fs = require('fs');
 const getCode = require('./utils');
 
 const app = express();
-const port = 5555;
+const port = process.env.PORT || 5555;
 
 const cutterTable = JSON.parse(fs.readFileSync('tabela_cutter.json', 'utf8'));
 const phaTable = JSON.parse(fs.readFileSync('tabela_pha.json', 'utf8'));
