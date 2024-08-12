@@ -39,6 +39,38 @@ app.get('/pha/:authorName', (req, res) => {
     res.send(response);
 });
 
+app.get('/list', (req, res) => {
+    const letter = req.query.letter;
+    const test = req.query.test;
+    const type = req.query.type;
+
+    let response;
+
+    if (type && ["cutter", "pha"].includes(type)) {
+        let selectedTable = type === "cutter" ? cutterTable : phaTable;
+
+        if (test && letter) {
+            const tableStart = '<table>';
+            const tableEnd = '</table>';
+
+            const firstRowLetter= `<thead><tr><th colspan="2">${letter}</th><th>Código</th></tr></thead>`;
+            const rows = Object.entries(selectedTable[letter]).map(([entry, code]) => {
+                return `<tr><td><strong>${entry}</strong></td><td>${code}</td></tr>`;
+            });
+
+            response = tableStart + firstRowLetter + "<tbody>" + rows.join("") + "</tbody>" + tableEnd;
+        } else if (letter) {
+            response = selectedTable[letter];
+        } else {
+            response = selectedTable;
+        }
+    } else {
+        response = "Tipo inválido";
+    }
+
+    res.send(response);
+});
+
 app.listen(port, () => {
     console.log(`Server on http://localhost:${port}`);
 });

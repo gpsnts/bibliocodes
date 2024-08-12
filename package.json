@@ -1,6 +1,6 @@
 {
   "name": "bibliocodes",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Gerador de código pha/cutter e listagem dos códigos",
   "main": "app.js",
   "scripts": {
