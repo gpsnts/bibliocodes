@@ -13,14 +13,30 @@ app.get('/cutter/:authorName', (req, res) => {
     const authorName = req.params.authorName;
     const bookTitle = req.query.bookTitle;
 
-    res.send(getCode(authorName, bookTitle, cutterTable));
+    let response;
+
+    if (req.query.test) {
+        response = `<h1 style="font-size: 12em;">${getCode(authorName, bookTitle, cutterTable)}</h1>`;
+    } else {
+        response = {"result": getCode(authorName, bookTitle, cutterTable)};
+    }
+
+    res.send(response);
 });
 
 app.get('/pha/:authorName', (req, res) => {
     const authorName = req.params.authorName;
     const bookTitle = req.query.bookTitle;
 
-    res.send(getCode(authorName, bookTitle, phaTable));
+    let response;
+
+    if (req.query.test) {
+        response = `<h1 style="font-size: 12em;">${getCode(authorName, bookTitle, phaTable)}</h1>`
+    } else {
+        response = {"result": getCode(authorName, bookTitle, phaTable)};
+    }
+    
+    res.send(response);
 });
 
 app.listen(port, () => {
