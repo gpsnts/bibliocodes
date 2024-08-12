@@ -1,0 +1,14 @@
+{
+  "name": "bibliocodes",
+  "version": "1.0.0",
+  "description": "Gerador de código pha/cutter e listagem dos códigos",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel Porto dos Santos",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
