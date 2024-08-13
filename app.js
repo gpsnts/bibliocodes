@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 
-const getCode = require('./utils');
+const {getCode, generateCutterCode} = require('./utils');
 
 const app = express();
 const port = process.env.PORT || 5555;
@@ -18,7 +18,7 @@ app.get('/cutter/:authorName', (req, res) => {
     if (req.query.test) {
         response = `<h1 style="font-size: 12em;">${getCode(authorName, bookTitle, cutterTable)}</h1>`;
     } else {
-        response = {"result": getCode(authorName, bookTitle, cutterTable)};
+        response = {"result": generateCutterCode(authorName, bookTitle)};
     }
 
     res.send(response);

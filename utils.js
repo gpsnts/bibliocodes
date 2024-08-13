@@ -44,4 +44,63 @@ function getCode(authorName, bookTitle, currentTable) {
     return code;
 }
 
-module.exports = getCode;
+const fs = require('fs');
+
+const data = fs.readFileSync('tabela_cutter.json', 'utf8');
+const cutterTable = JSON.parse(data);
+
+function authorNameFormatter(author) {
+    let words = author.trim().split(/[\s,]+/);
+    for (let i = 0; i < words.length; i++) {
+        if (i === 0) {
+            words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase();
+        } else {
+            words[i] = words[i].toLowerCase();
+        }
+    }
+    return words.join("");
+}
+
+
+function findMatches(entriesArray, query) {
+    return entriesArray.filter(([key, value]) => key.startsWith(query));
+}
+
+function generateCutterCode(author, title) {
+    const sanitizedAuthorName = authorNameFormatter(author);
+    const cutterLetterTable = cutterTable[sanitizedAuthorName[0]];
+
+    if (!cutterLetterTable) {
+        throw new Error(`Tabela Cutter não encontrada para a letra inicial: ${sanitizedAuthorName[0]}`);
+    }
+
+    let currentSubstring = sanitizedAuthorName[0];
+    let previousMatches = [];
+
+    const entriesArray = Object.entries(cutterLetterTable);
+
+    for (let i = 1; i < sanitizedAuthorName.length; i++) {
+        currentSubstring += sanitizedAuthorName[i];
+        const currentMatches = previousMatches.lenght > 0 ? findMatches(previousMatches, currentSubstring) : findMatches(entriesArray, currentSubstring);
+
+        if (currentMatches.length === 0 || (previousMatches.length === 1 && currentMatches.length === 0)) {
+            break;
+        }
+
+        previousMatches = currentMatches;
+    }
+
+    const result = previousMatches
+        .map(([key, value]) => ({ [key]: value }))
+        .map((obj) => Object.values(obj));
+
+    let cutterCode = sanitizedAuthorName[0] + result[0];
+
+    if (title) {
+        cutterCode += title[0].toLowerCase();
+    }
+
+    return cutterCode;
+}
+
+module.exports = {getCode, generateCutterCode};
