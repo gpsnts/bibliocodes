@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 
-const {getCode, generateCutterCode} = require('./utils');
+const { generateCode } = require('./utils');
 
 const app = express();
 const port = process.env.PORT || 5555;
@@ -16,9 +16,9 @@ app.get('/cutter/:authorName', (req, res) => {
     let response;
 
     if (req.query.test) {
-        response = `<h1 style="font-size: 12em;">${getCode(authorName, bookTitle, cutterTable)}</h1>`;
+        response = `<h1 style="font-size: 12em;">${generateCode(authorName, cutterTable, bookTitle)}</h1>`;
     } else {
-        response = {"result": generateCutterCode(authorName, bookTitle)};
+        response = {"result": generateCode(authorName, cutterTable, bookTitle)};
     }
 
     res.send(response);
@@ -31,9 +31,9 @@ app.get('/pha/:authorName', (req, res) => {
     let response;
 
     if (req.query.test) {
-        response = `<h1 style="font-size: 12em;">${getCode(authorName, bookTitle, phaTable)}</h1>`
+        response = `<h1 style="font-size: 12em;">${generateCode(authorName, phaTable, bookTitle)}</h1>`
     } else {
-        response = {"result": getCode(authorName, bookTitle, phaTable)};
+        response = {"result": generateCode(authorName, phaTable, bookTitle)};
     }
     
     res.send(response);
