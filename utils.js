@@ -30,23 +30,20 @@ function generateCode(author, table, title) {
         previousMatches = currentMatches;
     }
 
-    // Trecho para encontrar o caractere mais próximo quando há mais de uma opção
-    if (previousMatches.length > 1) {
-        console.log("previousMatches", previousMatches);
-
+    let exactMatch = previousMatches.find(subArray => subArray[0] === currentSubstring);
+    
+    if (previousMatches.length > 1 && !exactMatch) {
         const lastChar = currentSubstring.slice(-1);
         const filteredMatches = previousMatches.filter(([key]) => key.slice(-1) < lastChar);
 
-        console.log("filteredMatches", filteredMatches);
-
-        const closestEntry = filteredMatches.reduce((acc, current) =>
-            parseInt(current[1]) > parseInt(acc[1]) ? current : acc
-        );
-
-        console.log("closestEntry", closestEntry);
-        
-        let code = sanitizedAuthorName[0] + closestEntry[1];
-        return title ? code + title[0].toLowerCase() : code;
+        if (filteredMatches.length > 0) {
+            const closestEntry = filteredMatches.reduce((acc, current) =>
+                parseInt(current[1]) > parseInt(acc[1]) ? current : acc
+            );
+    
+            let code = sanitizedAuthorName[0] + closestEntry[1];
+            return title ? code + title[0].toLowerCase() : code;
+        }
     }
 
     let result = previousMatches.map(([_, value]) => value)[0];

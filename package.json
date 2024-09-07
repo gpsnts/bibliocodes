@@ -4,15 +4,17 @@
   "description": "Gerador de código pha/cutter e listagem dos códigos",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon --inspect=0.0.0.0:5555 app.js"
   },
   "author": "Gabriel Porto dos Santos",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2",
-    "functional-red-black-tree": "^1.0.1"
+    "express": "^4.19.2"
   },
   "engines": {
     "node": ">=20.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
