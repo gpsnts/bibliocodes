@@ -1,10 +1,13 @@
 const express = require('express');
 const fs = require('fs');
+const cors = require('cors');
 
 const { generateCode } = require('./utils');
 
 const app = express();
 const port = process.env.PORT || 5555;
+
+app.use(cors());
 
 const cutterTable = JSON.parse(fs.readFileSync('tabela_cutter.json', 'utf8'));
 const phaTable = JSON.parse(fs.readFileSync('tabela_pha.json', 'utf8'));
