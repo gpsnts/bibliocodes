@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bibliocodes — Gerador Cutter-Sanborn e PHA</title>
+    <meta name="description" content="Gerador on-line de códigos de notação de autor Cutter-Sanborn e PHA. Sem cadastro, sem servidor — tudo em JSON no navegador." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" />
+    <script>
+      // Restaura o path codificado pelo 404.html
+      // Ex: /bibliocodes/?p=/gerar → history vira /bibliocodes/gerar
+      (function() {
+        var p = window.location.search.match(/[?&]p=([^&]*)/);
+        if (p) {
+          var decoded = decodeURIComponent(p[1]);
+          window.history.replaceState(
+            null, null,
+            '/bibliocodes' + decoded
+          );
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

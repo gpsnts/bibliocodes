@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      // GitHub Pages SPA redirect — preserva o path como query string
+      // Ex: /bibliocodes/gerar → /bibliocodes/?p=/gerar
+      var l = window.location;
+      var base = '/bibliocodes';
+      var rest = l.pathname.slice(base.length) || '/';
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        base + '/?p=' + encodeURIComponent(rest + (l.search || '') + (l.hash || ''))
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
