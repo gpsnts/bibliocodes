@@ -31,7 +31,7 @@ O algoritmo segue 4 passos:
 Entrada: Silva, João
 
 Cutter-Sanborn: S585
-PHA: Si
+PHA: S58
 ```
 
 ---
