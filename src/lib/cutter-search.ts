@@ -66,14 +66,16 @@ function resolveMultiple(
 
 export function generateCode(name: string, table: CutterTable): string {
   if (!name.trim()) return "";
-  const sanitized = normalizeChar(formatAuthor(name));
+  const sanitized = name.includes(" ") ? name.split(" ")[0] : normalizeChar(formatAuthor(name));
+
   const firstLetter = sanitized[0]?.toUpperCase();
+
   if (!firstLetter || !table[firstLetter]) return "—";
 
   const entries = Object.entries(table[firstLetter]);
 
   const exact = entries.filter(
-    ([k]) => k === name[0].toUpperCase() + name.slice(1).toLowerCase()
+    ([k]) => k === name[0].toUpperCase() + name.slice(1).toLowerCase() || k === sanitized
   );
   if (exact.length === 1) return firstLetter + exact[0][1];
 
@@ -88,5 +90,6 @@ export function generateCode(name: string, table: CutterTable): string {
   }
 
   if (results.length === 1) return firstLetter + results[0][1];
+
   return firstLetter + resolveMultiple(results, current);
 }
