@@ -28,10 +28,6 @@ export function TableViewer({ kind, title }: { kind: "cutter" | "pha"; title: st
       <div className="mb-8">
         <p className="text-xs uppercase tracking-[0.2em] text-accent mb-2">Tabela</p>
         <h1 className="font-serif text-5xl text-primary mb-3">{title}</h1>
-        <p className="text-muted-foreground max-w-2xl">
-          Consulte os códigos de notação para qualquer prefixo. A busca é local — toda
-          a tabela está em um único arquivo JSON carregado no navegador.
-        </p>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 mb-6">
