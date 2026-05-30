@@ -261,12 +261,6 @@ npm run build -- --force
 
 ---
 
-## 📄 Licença
-
-MIT License — Veja [LICENSE](LICENSE) para detalhes.
-
----
-
 ## 🤝 Contribuindo
 
 Contribuições são bem-vindas! Para mudanças, por favor:
