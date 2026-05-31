@@ -106,6 +106,11 @@ function Generator() {
                 )}
               </div>
             )}
+            <p className="text-muted-foreground">
+              <strong className="text-foreground">Atenção:</strong> o código gerado é apenas uma
+              sugestão baseada na tabela de corte. Verifique sempre a notação na tabela respectiva para garantir
+              que esteja correta.
+            </p>
           </div>
         </div>
 
