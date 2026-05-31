@@ -119,11 +119,11 @@ function Home() {
                   </div>
                   <div className="border-t border-border/50 pt-4">
                     <p className="text-sm text-muted-foreground mb-2">Cutter-Sanborn:</p>
-                    <p className="font-mono text-2xl font-bold text-primary">S585</p>
+                    <p className="font-mono text-2xl font-bold text-primary">S586</p>
                   </div>
                   <div className="border-t border-border/50 pt-4">
                     <p className="text-sm text-muted-foreground mb-2">PHA:</p>
-                    <p className="font-mono text-2xl font-bold text-primary">S58</p>
+                    <p className="font-mono text-2xl font-bold text-primary">S578</p>
                   </div>
                 </div>
               </div>
