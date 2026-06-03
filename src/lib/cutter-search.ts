@@ -14,6 +14,16 @@ export function loadTable(kind: "cutter" | "pha"): Promise<CutterTable> {
   return cache[kind];
 }
 
+export function loadTableRead(kind: "cutter" | "pha"): Promise<CutterTable> {
+  if (!cache[kind]) {
+    cache[kind] = fetch(`${import.meta.env.BASE_URL}data/${kind}_read.json`).then((r) => {
+      if (!r.ok) throw new Error(`Não foi possível carregar a tabela ${kind}`);
+      return r.json();
+    });
+  }
+  return cache[kind];
+}
+
 function normalizeChar(str: string): string {
   str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   const map: Record<string, string> = {

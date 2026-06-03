@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { loadTable, type CutterTable } from "@/lib/cutter-search";
+import { loadTableRead, type CutterTable } from "@/lib/cutter-search";
 
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -10,7 +10,7 @@ export function TableViewer({ kind, title }: { kind: "cutter" | "pha"; title: st
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadTable(kind)
+    loadTableRead(kind)
       .then(setTable)
       .catch((e) => setError(e.message));
   }, [kind]);
