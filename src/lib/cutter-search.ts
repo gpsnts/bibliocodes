@@ -76,9 +76,18 @@ function resolveMultiple(
 
 export function generateCode(name: string, table: CutterTable): string {
   if (!name.trim()) return "";
-  const sanitized = name.includes(" ")
-    ? name.split(" ")[0].replace(/,+$/, "")
-    : normalizeChar(formatAuthor(name));
+
+  let sanitized: string;
+  if (name.includes(" ")) {
+    const parts = name.trim().split(/\s+/);
+    const primarySurname = parts[0].replace(/,+$/, "");
+    const disambiguator = parts[1]
+      ? normalizeChar(parts[1].replace(/,+$/, "")[0]?.toLowerCase() ?? "")
+      : "";
+    sanitized = primarySurname + disambiguator;
+  } else {
+    sanitized = normalizeChar(formatAuthor(name));
+  }
 
   const firstLetter = sanitized[0]?.toUpperCase();
 
