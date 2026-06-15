@@ -37,12 +37,12 @@ function Home() {
             Notação de autor · catalogação
           </p>
           <h1 className="font-serif text-6xl md:text-7xl leading-[1.05] text-primary mb-6">
-            Códigos de catalogação,
+            Tabelas de Notação,
             <span className="italic text-accent"> sem fricção.</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
             Bibliocodes consulta as tabelas <strong className="text-foreground">Cutter-Sanborn</strong>{" "}
-            e <strong className="text-foreground">PHA</strong> diretamente no seu navegador.
+            e <strong className="text-foreground">PHA</strong> diretamente no seu navegador. De forma totalmente grátis, rápida e sem complicações diretamente no seu navegador — de forma gratuita, rápida e sem complicações..
           </p>
         </section>
 
