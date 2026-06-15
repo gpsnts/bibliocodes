@@ -43,7 +43,6 @@ function Home() {
           <p className="text-lg text-muted-foreground leading-relaxed">
             Bibliocodes consulta as tabelas <strong className="text-foreground">Cutter-Sanborn</strong>{" "}
             e <strong className="text-foreground">PHA</strong> diretamente no seu navegador.
-            Sem banco de dados, sem login.
           </p>
         </section>
 
