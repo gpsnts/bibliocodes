@@ -3,15 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <script>
-      // GitHub Pages SPA redirect — preserva o path como query string
-      // Ex: /bibliocodes/gerar → /bibliocodes/?p=/gerar
       var l = window.location;
       var base = '/bibliocodes';
-      var rest = l.pathname.slice(base.length) || '/';
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        base + '/?p=' + encodeURIComponent(rest + (l.search || '') + (l.hash || ''))
-      );
+
+      // Evita loop: se já tem ?p= na query, não faz nada
+      if (l.search.indexOf('?p=') === 0 || l.search.indexOf('&p=') !== -1) {
+        // já foi redirecionado, deixa o index.html resolver
+      } else {
+        var rest = l.pathname.slice(base.length) || '/';
+        l.replace(
+          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+          base + '/?p=' + encodeURIComponent(rest + (l.search || '') + (l.hash || ''))
+        );
+      }
     </script>
   </head>
   <body></body>
