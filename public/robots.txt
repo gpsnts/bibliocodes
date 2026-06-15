@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bibliocodes.com.br/sitemap.xml
