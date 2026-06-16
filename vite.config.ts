@@ -5,7 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 export default defineConfig({
-  base: "/",
+  base: "/bibliocodes/",
   plugins: [
     TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
     tailwindcss(),
