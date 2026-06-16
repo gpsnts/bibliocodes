@@ -1,5 +1,3 @@
-// Gerador de códigos Cutter-Sanborn / PHA. Inteiramente no cliente; tabelas carregadas de /data/*.json.
-
 export type CutterTable = Record<string, Record<string, string>>;
 
 const cache: Record<string, Promise<CutterTable>> = {};

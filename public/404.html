@@ -4,18 +4,12 @@
     <meta charset="utf-8" />
     <script>
       var l = window.location;
-      var base = '/bibliocodes';
-
-      // Evita loop: se já tem ?p= na query, não faz nada
-      if (l.search.indexOf('?p=') === 0 || l.search.indexOf('&p=') !== -1) {
-        // já foi redirecionado, deixa o index.html resolver
-      } else {
-        var rest = l.pathname.slice(base.length) || '/';
-        l.replace(
-          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-          base + '/?p=' + encodeURIComponent(rest + (l.search || '') + (l.hash || ''))
-        );
-      }
+      var base = ''; // domínio raiz, sem subpath
+      var rest = l.pathname || '/';
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        '/?p=' + encodeURIComponent(rest + (l.search || '') + (l.hash || ''))
+      );
     </script>
   </head>
   <body></body>
