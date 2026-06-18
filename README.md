@@ -6,6 +6,8 @@ Gerador online de códigos de notação de autor **Cutter-Sanborn** e **PHA**. U
 ![Node](https://img.shields.io/badge/node-20%2B-brightgreen)
 ![React](https://img.shields.io/badge/react-19-61dafb)
 
+---
+
 ## ✨ Funcionalidades
 
 - 🔍 **Gerador em tempo real** — Digite um sobrenome e obtenha o código instantaneamente
@@ -15,6 +17,8 @@ Gerador online de códigos de notação de autor **Cutter-Sanborn** e **PHA**. U
 - 🎨 **Interface moderna** — Design limpo com Tailwind CSS e componentes Radix UI
 - 📱 **Responsivo** — Funciona em desktop, tablet e mobile
 - 🚀 **Rápido** — Busca por intervalo otimizada em memória
+
+---
 
 ## 🎯 Como Funciona
 
@@ -40,7 +44,7 @@ PHA: S578
 
 ### Pré-requisitos
 - Node.js 20+
-- npm ou yarn
+- Bun (recomendado) ou npm
 
 ### Instalação
 
@@ -50,44 +54,44 @@ git clone https://github.com/seu-usuario/bibliocodes.git
 cd bibliocodes
 
 # Instalar dependências
-npm install
+bun install
 ```
 
 ### Desenvolvimento
 
 ```bash
 # Iniciar servidor de desenvolvimento
-npm run dev
+bun run dev
 ```
 
-Abre `http://localhost:5173` no navegador.
+Abre `http://localhost:3000` no navegador.
 
 ### Build para Produção
 
 ```bash
 # Compilar para produção
-npm run build
+bun run build
 
 # Visualizar build localmente
-npm run preview
+bun run preview
 ```
-
-A pasta `dist/` estará pronta para deploy.
 
 ---
 
 ## 📦 Stack Tecnológico
 
-### Frontend
+### Framework & Frontend
+- **TanStack Start** — Full-stack React framework com SSR/SSG
 - **React 19** — Framework UI
-- **TanStack Router** — Roteamento de página única (SPA)
+- **TanStack Router** — Roteamento file-based com type safety
 - **TanStack Query** — Gerenciamento de estado assíncrono
-- **Tailwind CSS** — Estilização utilitária
-- **Radix UI** — Componentes acessíveis (accordion, dialog, etc.)
+- **Tailwind CSS v4** — Estilização utilitária com CSS variables
+- **Radix UI / shadcn** — Componentes acessíveis (accordion, dialog, etc.)
 - **TypeScript** — Type safety
 
 ### Build & Dev
-- **Vite** — Build tool moderno e rápido
+- **Vite 8** — Build tool moderno e rápido
+- **Bun** — Runtime e gerenciador de pacotes
 - **ESLint** — Linting de código
 - **Prettier** — Code formatter
 
@@ -102,8 +106,8 @@ A pasta `dist/` estará pronta para deploy.
 ```
 bibliocodes/
 ├── src/
-│   ├── routes/              # Páginas (TanStack Router)
-│   │   ├── __root.tsx       # Layout raiz
+│   ├── routes/              # Rotas (TanStack Start file-based routing)
+│   │   ├── __root.tsx       # Layout raiz (HTML shell + providers)
 │   │   ├── index.tsx        # Home
 │   │   ├── gerar.tsx        # Gerador
 │   │   ├── cutter.tsx       # Tabela Cutter-Sanborn
@@ -111,115 +115,48 @@ bibliocodes/
 │   ├── components/          # Componentes React
 │   │   ├── SiteHeader.tsx   # Cabeçalho
 │   │   ├── TableViewer.tsx  # Visualizador de tabelas
-│   │   └── ui/              # Componentes Radix UI
+│   │   └── ui/              # Componentes shadcn/ui (Radix)
 │   ├── lib/
 │   │   ├── cutter-search.ts # Lógica de busca Cutter
-│   │   ├── utils.ts         # Utilitários
-│   │   └── config.server.ts # Configurações
+│   │   ├── utils.ts         # Utilitários (cn, etc.)
+│   │   └── ...              # Outros utilitários
 │   ├── hooks/               # Custom React hooks
-│   ├── router.tsx           # Configuração do router
-│   ├── main.tsx             # Entry point
-│   └── styles.css           # Estilos globais
+│   ├── router.tsx           # Configuração do TanStack Router
+│   ├── server.ts            # Entry point SSR (wrapper)
+│   ├── start.ts             # Configuração do TanStack Start
+│   └── styles.css           # Estilos globais (Tailwind v4 + tokens)
 ├── public/
 │   └── data/
 │       ├── cutter.json      # Dados Cutter-Sanborn
 │       └── pha.json         # Dados PHA
-├── .github/
-│   └── workflows/
-│       └── deploy.yml       # GitHub Actions CI/CD
 ├── vite.config.ts           # Configuração Vite
 ├── tsconfig.json            # Configuração TypeScript
 ├── package.json
 └── README.md
 ```
 
+> **Nota sobre rotas:** `routeTree.gen.ts` é auto-gerado pelo plugin do TanStack Router. **Não edite manualmente.**
+
 ---
 
-## 🔧 Disponíveis Scripts
+## 🔧 Scripts Disponíveis
 
 | Comando | Descrição |
 |---------|-----------|
-| `npm run dev` | Inicia servidor dev em `http://localhost:5173` |
-| `npm run build` | Compila para produção em `dist/` |
-| `npm run preview` | Visualiza build em `http://localhost:4173/bibliocodes/` |
-| `npm run lint` | Executa ESLint |
-| `npm run format` | Formata código com Prettier |
-
----
-
-## 📤 Deploy
-
-### GitHub Pages (Recomendado)
-
-O projeto está configurado para deploy automático via GitHub Actions.
-
-#### 1. Pré-requisitos
-- Repositório no GitHub
-- Branch `main` como padrão
-
-#### 2. Ativar GitHub Pages
-
-1. Vá para **Settings → Pages**
-2. Em "Build and deployment", selecione **"GitHub Actions"**
-
-#### 3. Deploy automático
-
-```bash
-git add .
-git commit -m "Deploy para GitHub Pages"
-git push origin main
-```
-
-O workflow `.github/workflows/deploy.yml` roda automaticamente:
-- ✅ Instala dependências
-- ✅ Faz build
-- ✅ Publica em `https://seu-usuario.github.io/bibliocodes/`
-
-#### 4. Verificar publicação
-
-Após alguns minutos, seu site estará disponível em:
-```
-https://seu-usuario.github.io/bibliocodes/
-```
-
----
-
-## 🧪 Testando Localmente
-
-### Teste 1: Desenvolvimento
-```bash
-npm run dev
-# Acessa http://localhost:5173
-```
-
-### Teste 2: Build de Produção
-```bash
-npm run build
-npm run preview
-# Acessa http://localhost:4173/bibliocodes
-```
-
-Certifique-se que:
-- ✅ Links funcionam com `/bibliocodes/` no início
-- ✅ Dados JSON carregam corretamente
-- ✅ Tabelas são pesquisáveis
-- ✅ Gerador funciona em tempo real
+| `bun run dev` | Inicia servidor dev em `http://localhost:3000` |
+| `bun run build` | Compila para produção |
+| `bun run build:dev` | Compila para produção em modo development |
+| `bun run preview` | Visualiza build localmente |
+| `bun run lint` | Executa ESLint |
+| `bun run format` | Formata código com Prettier |
 
 ---
 
 ## 🎨 Customização
 
-### Alterar o nome do repositório
-Se seu repositório não é chamado `bibliocodes`, atualize `vite.config.ts`:
-
-```typescript
-base: process.env.NODE_ENV === "production"
-  ? "/seu-repo-name/"
-  : "/"
-```
-
 ### Adicionar novas rotas
-Crie arquivos em `src/routes/`:
+
+Crie arquivos em `src/routes/` seguindo as convenções do TanStack Router:
 
 ```typescript
 // src/routes/about.tsx
@@ -230,27 +167,49 @@ export const Route = createFileRoute("/about")({
 });
 ```
 
+| Padrão de arquivo | URL | Tipo |
+|---|---|---|
+| `index.tsx` | `/` | Página inicial |
+| `about.tsx` | `/about` | Página estática |
+| `users/$id.tsx` | `/users/:id` | Segmento dinâmico |
+| `posts/{-$category}.tsx` | `/posts/:category?` | Segmento opcional |
+| `_layout.tsx` | — | Layout (renders via `<Outlet />`) |
+
+> **Importante:** `src/routes/__root.tsx` é o layout raiz. Ele deve sempre renderizar `<Outlet />` para que as rotas filhas apareçam. Não crie `src/routes/_app/index.tsx` — isso conflita com `src/routes/index.tsx`.
+
 ### Estilizar componentes
-Use as classes Tailwind CSS e os componentes Radix UI em `src/components/ui/`.
+
+Use as classes Tailwind CSS e os componentes shadcn/ui em `src/components/ui/`. As cores são definidas via CSS variables no `src/styles.css` (sistema de tokens oklch).
+
+### Alterar metadados
+
+Edite o `head()` nas rotas para título, description, Open Graph, etc.:
+
+```typescript
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Bibliocodes — Gerador de códigos" },
+      { name: "description", content: "Gerador online de códigos Cutter-Sanborn e PHA." },
+    ],
+  }),
+  component: Index,
+});
+```
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Build falha com erro de tipo TypeScript
-```bash
-npm run build -- --force
-```
+### Build falha com erro de importação
+Certifique-se de que todos os imports resolvem para arquivos existentes. O TanStack Start exige strict TypeScript — imports quebrados causam falha de build.
 
 ### Tabelas não carregam
 - Verifique se `public/data/cutter.json` e `public/data/pha.json` existem
-- Verifique o path em `lib/config.server.ts`
+- Verifique o path de fetch no componente consumidor
 
 ### 404 em desenvolvimento
-```bash
-# Errado: http://localhost:5173/bibliocodes/
-# Correto: http://localhost:5173/
-```
+O TanStack Router usa file-based routing. Certifique-se de que o arquivo da rota existe em `src/routes/` com o nome correto.
 
 ---
 
