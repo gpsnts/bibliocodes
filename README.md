@@ -234,7 +234,7 @@ Contribuições são bem-vindas! Para mudanças, por favor:
 
 ## 📞 Suporte
 
-Encontrou um problema? Abra uma [issue](https://github.com/seu-usuario/bibliocodes/issues) no GitHub.
+Encontrou um problema? Abra uma [issue](https://github.com/gpsnts/bibliocodes/issues) no GitHub.
 
 ---
 
