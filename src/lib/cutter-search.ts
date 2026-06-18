@@ -12,14 +12,66 @@ export function loadTable(kind: "cutter" | "pha"): Promise<CutterTable> {
   return cache[kind];
 }
 
+const readCache: Record<string, Promise<CutterTable>> = {};
+
 export function loadTableRead(kind: "cutter" | "pha"): Promise<CutterTable> {
-  if (!cache[kind]) {
-    cache[kind] = fetch(`${import.meta.env.BASE_URL}data/${kind}_read.json`).then((r) => {
+  if (!readCache[kind]) {
+    readCache[kind] = fetch(`${import.meta.env.BASE_URL}data/${kind}_read.json`).then((r) => {
       if (!r.ok) throw new Error(`Não foi possível carregar a tabela ${kind}`);
       return r.json();
     });
   }
-  return cache[kind];
+  return readCache[kind];
+}
+
+// ---------------------------------------------------------------------------
+// getContext
+//
+// Retorna as N entradas anteriores e N entradas posteriores ao código gerado
+// na tabela de leitura (_read.json), formando um "contexto" da posição do
+// nome na tabela impressa.
+//
+// A entrada encontrada é identificada pelo código numérico retornado por
+// generateCode (ex: "P882" → número "882"). Retorna um array plano de
+// { key, code, isCurrent } ordenado pela posição na tabela.
+// ---------------------------------------------------------------------------
+export interface ContextEntry {
+  key: string;
+  code: string;
+  isCurrent: boolean;
+}
+
+export function getContext(
+  generatedCode: string,
+  readTable: CutterTable,
+  around = 2
+): ContextEntry[] {
+  if (!generatedCode || generatedCode === "—") return [];
+
+  // O código gerado tem formato "L<número>", ex: "P882", "Z73"
+  const letter = generatedCode[0].toUpperCase();
+  const codeNumber = generatedCode.slice(1);
+
+  const section = readTable[letter];
+  if (!section) return [];
+
+  // Achata a seção em array ordenado por valor numérico (string→number)
+  const entries = Object.entries(section).sort(
+    ([, a], [, b]) => Number(a) - Number(b)
+  );
+
+  // Encontra o índice da entrada cujo código corresponde ao gerado
+  const idx = entries.findIndex(([, v]) => v === codeNumber);
+  if (idx === -1) return [];
+
+  const start = Math.max(0, idx - around);
+  const end = Math.min(entries.length - 1, idx + around);
+
+  return entries.slice(start, end + 1).map(([key, code], i) => ({
+    key,
+    code: letter + code,
+    isCurrent: start + i === idx,
+  }));
 }
 
 // ---------------------------------------------------------------------------
@@ -104,6 +156,7 @@ function extractLookupString(name: string): string {
   if (name.includes(",")) {
     const commaIdx = name.indexOf(",");
     const surnamePart = name.slice(0, commaIdx).trim();
+    const givenPart = name.slice(commaIdx + 1).trim();
     const surnameWords = surnamePart.split(/\s+/);
     const primary = surnameWords[0];
 
@@ -111,9 +164,19 @@ function extractLookupString(name: string): string {
       // Partícula: usa apenas a primeira palavra
       return primary;
     }
-    // Sobrenome real com segundo elemento: usa inicial do segundo elemento
-    const disambig = surnameWords[1] ? surnameWords[1][0].toLowerCase() : "";
-    return primary + disambig;
+
+    if (surnameWords.length === 1) {
+      // Sobrenome simples com vírgula ("Porto, Leonardo"):
+      // usa a inicial do prenome (após a vírgula) como desambiguador,
+      // pois a tabela indexa esse autor como "Porto, L."
+      const disambig = givenPart ? givenPart[0].toLowerCase() : "";
+      return primary + disambig;
+    }
+
+    // Sobrenome composto ("Zimmermann Soares, Gabriel"):
+    // usa apenas o primeiro elemento — o segundo elemento do sobrenome
+    // não é desambiguador na tabela Cutter/PHA.
+    return primary;
   }
 
   if (name.includes(" ")) {
@@ -156,23 +219,13 @@ function tableHasSpacedKeys(table: CutterTable): boolean {
 //      normalizada é ≤ ao nome normalizado (ordem lexicográfica),
 //      seleciona aquela com o maior valor lexicográfico — equivalente a
 //      "a última entrada da tabela que não ultrapassa o nome buscado".
-//
-// Essa estratégia (LTE + max-lex) corrige os erros anteriores:
-//   • Christe → C554 (Chri), não C555 (Christi): "chri" ≤ "christe" e
-//     "christi" > "christe", portanto Christi não é candidato.
-//   • Porto, Gabriel → P853 (Portm): "portm" ≤ "portog" e é a maior
-//     chave antes de "porto" (que não existe na tabela).
-//   • Ziqing, Zhu → Z79 (Zinz): "zinz" ≤ "ziqingz" (n < q) e é a
-//     maior chave disponível dentro do bloco Zi*.
-//   • Zimmermann Nantos → Z75 (Zimmermannm): desambiguador "n" →
-//     "zimmermannn"; "zimmermannm" ≤ "zimmermannn" e "zimmermanns" > "zimmermannn".
-//   • De Carvalho, Olavo → D278 (De): partícula detectada; usa só "De".
-//   • Saint-Exupéry [Cutter] → S137 (Saint E): hífen vira espaço;
-//     "saint e" ≤ "saint exupery" e "sainte" > "saint exupery" (e > espaço).
-//   • Saint-Exupéry [PHA] → S144 (Sainte): sem espaços na tabela;
-//     hífen removido; "sainte" ≤ "saintexupery".
+//   3. Verificação de colisão exata: quando o nome contém vírgula e o match
+//      é exato (não LTE floor), verifica na tabela de leitura se existe uma
+//      entrada "Sobrenome, Inicial." correspondente. Se não existe, refaz a
+//      busca usando apenas o sobrenome, evitando colisões como "Portog"
+//      (Portugal) ao buscar "Porto, Gabriel".
 // ---------------------------------------------------------------------------
-export function generateCode(name: string, table: CutterTable): string {
+export function generateCode(name: string, table: CutterTable, readTable?: CutterTable): string {
   if (!name.trim()) return "";
 
   // Passo 1: pré-processamento
@@ -200,7 +253,60 @@ export function generateCode(name: string, table: CutterTable): string {
     normalizeKey(a[0], hasSpaces) >= normalizeKey(b[0], hasSpaces) ? a : b
   );
 
-  return firstLetter + best[1];
+  const result = firstLetter + best[1];
+
+  // Passo 4: quando a entrada tem vírgula e sobrenome simples, verificar se
+  // houve colisão EXATA com uma entrada que representa outra palavra.
+  // Ex: "Porto, Gabriel" → "Portog" bate exatamente com "Portog" (Portugal).
+  // Não se aplica a matches LTE normais como "Zimmermannm" ≤ "Zimmermannn".
+  if (readTable && name.includes(",")) {
+    const commaIdx = name.indexOf(",");
+    const surnamePart = name.slice(0, commaIdx).trim();
+    const givenPart = name.slice(commaIdx + 1).trim();
+    const surnameWords = surnamePart.split(/\s+/);
+
+    if (
+      surnameWords.length === 1 &&
+      givenPart &&
+      !PARTICLES.has(surnameWords[0].toLowerCase())
+    ) {
+      const bestNorm = normalizeKey(best[0], hasSpaces);
+
+      // Só verifica quando o match é EXATO (possível colisão com outra palavra)
+      if (bestNorm === norm) {
+        const initial = givenPart[0].toUpperCase();
+        const readSection = readTable[firstLetter];
+
+        if (readSection) {
+          const disambigPrefix = surnamePart + ", " + initial;
+          const hasDisambigEntry = Object.keys(readSection).some((k) =>
+            k.startsWith(disambigPrefix)
+          );
+
+          if (!hasDisambigEntry) {
+            // Colisão confirmada — refaz busca só com o sobrenome
+            const surnameNorm = normalizeKey(
+              expandMcPrefix(surnamePart),
+              hasSpaces
+            );
+            const surnameCandidates = entries.filter(
+              ([k]) => normalizeKey(k, hasSpaces) <= surnameNorm
+            );
+            if (surnameCandidates.length > 0) {
+              const surnameBest = surnameCandidates.reduce((a, b) =>
+                normalizeKey(a[0], hasSpaces) >= normalizeKey(b[0], hasSpaces)
+                  ? a
+                  : b
+              );
+              return firstLetter + surnameBest[1];
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return result;
 }
 
 // ---------------------------------------------------------------------------
