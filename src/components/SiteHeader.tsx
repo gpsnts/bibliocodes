@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Github } from "lucide-react";
 
 export function SiteHeader() {
   return (
@@ -8,6 +9,14 @@ export function SiteHeader() {
           Bibliocodes<span className="text-accent">.</span>
         </Link>
         <nav className="flex items-center gap-1 text-sm">
+          <a
+            href="https://github.com/gpsnts/bibliocodes"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-2 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors flex items-center gap-1.5"
+          >
+            <Github size={15} /> GitHub
+          </a>
           <Link
             to="/cutter"
             className="px-3 py-2 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
