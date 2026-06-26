@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
+import { Github } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -127,11 +128,23 @@ function Home() {
         </section>
       </main>
       <footer className="border-t border-border mt-20">
-        <div className="mx-auto max-w-6xl px-6 py-8 text-xs text-muted-foreground flex justify-between">
-          <span>Bibliocodes © {new Date().getFullYear()}</span>
-          <span className="font-mono">Cutter-Sanborn · PHA</span>
-        </div>
-      </footer>
+  <div className="mx-auto max-w-6xl px-6 py-8 text-xs text-muted-foreground flex items-center justify-between">
+    <div className="flex items-center gap-3">
+      <span>Bibliocodes © {new Date().getFullYear()}</span>
+      <span className="text-border">·</span>
+      <a
+        href="https://github.com/gpsnts/bibliocodes"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-primary transition-colors flex items-center gap-1.5"
+      >
+        <Github size={15} />
+        <span className="hidden sm:inline">GitHub</span>
+      </a>
+    </div>
+    <span className="font-mono">Cutter-Sanborn · PHA</span>
+  </div>
+</footer>
     </div>
   );
 }
