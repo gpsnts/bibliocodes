@@ -24,7 +24,7 @@ const cards = [
     to: "/pha" as const,
     eyebrow: "Referência",
     title: "Tabela PHA",
-    desc: "Adaptação brasileira otimizada para nomes em português, com granularidade variável.",
+    desc: "Adaptação brasileira otimizada para nomes em português, com granularidade variável. Baseada na obra de Heloisa de Almeida Prado (1984).",
   },
 ];
 
@@ -103,6 +103,11 @@ function Home() {
                     </div>
                   </div>
                 ))}
+                <p className="text-xs text-muted-foreground mt-8">
+                  A Tabela Cutter-Sanborn é de domínio público. A Tabela PHA é baseada na obra de{" "}
+                  <span className="text-foreground">Heloisa de Almeida Prado</span> (T. A. Queiroz, 1984),
+                  digitalizada para uso educativo e sem fins lucrativos.
+                </p>
               </div>
             </div>
             <div className="flex flex-col justify-center">
@@ -132,6 +137,7 @@ function Home() {
     <div className="flex items-center gap-3">
       <span>Bibliocodes © {new Date().getFullYear()}</span>
       <span className="text-border">·</span>
+      <span>Tabela PHA baseada em PRADO, H. A. T. A. Queiroz, 1984</span>
       <a
         href="https://github.com/gpsnts/bibliocodes"
         target="_blank"
