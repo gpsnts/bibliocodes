@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PhaRouteImport } from './routes/pha'
 import { Route as GerarRouteImport } from './routes/gerar'
 import { Route as CutterRouteImport } from './routes/cutter'
+import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as IndexRouteImport } from './routes/index'
 
 const PhaRoute = PhaRouteImport.update({
@@ -29,6 +30,11 @@ const CutterRoute = CutterRouteImport.update({
   path: '/cutter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContatoRoute = ContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contato': typeof ContatoRoute
   '/cutter': typeof CutterRoute
   '/gerar': typeof GerarRoute
   '/pha': typeof PhaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contato': typeof ContatoRoute
   '/cutter': typeof CutterRoute
   '/gerar': typeof GerarRoute
   '/pha': typeof PhaRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contato': typeof ContatoRoute
   '/cutter': typeof CutterRoute
   '/gerar': typeof GerarRoute
   '/pha': typeof PhaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cutter' | '/gerar' | '/pha'
+  fullPaths: '/' | '/contato' | '/cutter' | '/gerar' | '/pha'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cutter' | '/gerar' | '/pha'
-  id: '__root__' | '/' | '/cutter' | '/gerar' | '/pha'
+  to: '/' | '/contato' | '/cutter' | '/gerar' | '/pha'
+  id: '__root__' | '/' | '/contato' | '/cutter' | '/gerar' | '/pha'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContatoRoute: typeof ContatoRoute
   CutterRoute: typeof CutterRoute
   GerarRoute: typeof GerarRoute
   PhaRoute: typeof PhaRoute
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CutterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contato': {
+      id: '/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContatoRoute: ContatoRoute,
   CutterRoute: CutterRoute,
   GerarRoute: GerarRoute,
   PhaRoute: PhaRoute,

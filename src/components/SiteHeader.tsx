@@ -1,30 +1,38 @@
 import { Link } from "@tanstack/react-router";
+import { BrandMark } from "@/components/BrandMark";
 
 export function SiteHeader() {
   return (
-    <header className="border-b border-border/60 bg-background/80 backdrop-blur sticky top-0 z-10">
-      <div className="mx-auto max-w-6xl px-6 py-5 flex items-center justify-between">
-        <Link to="/" className="font-serif text-2xl tracking-tight text-primary">
-          Bibliocodes<span className="text-accent">.</span>
+    <header className="sticky top-0 z-10 border-b border-primary/80 bg-primary/95 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <Link to="/" aria-label="Bibliocodes — início" className="w-fit shrink-0">
+          <BrandMark className="h-11 w-auto object-contain sm:h-12" />
         </Link>
-        <nav className="flex items-center gap-1 text-sm">
+        <nav aria-label="Navegação principal" className="flex w-full items-center gap-1 overflow-x-auto text-sm sm:w-auto">
+          <Link
+            to="/contato"
+            className="whitespace-nowrap rounded-md px-3 py-2 text-primary-foreground/75 transition-colors hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            activeProps={{ className: "whitespace-nowrap rounded-md bg-primary-foreground/10 px-3 py-2 text-primary-foreground" }}
+          >
+            Contato
+          </Link>
           <Link
             to="/cutter"
-            className="px-3 py-2 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
-            activeProps={{ className: "px-3 py-2 rounded-md text-primary bg-muted" }}
+            className="whitespace-nowrap rounded-md px-3 py-2 text-primary-foreground/75 transition-colors hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            activeProps={{ className: "whitespace-nowrap rounded-md bg-primary-foreground/10 px-3 py-2 text-primary-foreground" }}
           >
             Tabela Cutter
           </Link>
           <Link
             to="/pha"
-            className="px-3 py-2 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
-            activeProps={{ className: "px-3 py-2 rounded-md text-primary bg-muted" }}
+            className="whitespace-nowrap rounded-md px-3 py-2 text-primary-foreground/75 transition-colors hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            activeProps={{ className: "whitespace-nowrap rounded-md bg-primary-foreground/10 px-3 py-2 text-primary-foreground" }}
           >
             Tabela PHA
           </Link>
           <Link
             to="/gerar"
-            className="px-3 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="ml-auto whitespace-nowrap rounded-md bg-accent px-3 py-2 text-accent-foreground transition-colors hover:bg-accent/90 sm:ml-0"
           >
             Gerar código
           </Link>

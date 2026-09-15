@@ -138,15 +138,6 @@ function Home() {
       <span>Bibliocodes © {new Date().getFullYear()}</span>
       <span className="text-border">·</span>
       <span>Tabela PHA baseada em PRADO, H. A. T. A. Queiroz, 1984</span>
-      <a
-        href="https://github.com/gpsnts/bibliocodes"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-primary transition-colors flex items-center gap-1.5"
-      >
-        <Github size={15} />
-        <span className="hidden sm:inline">GitHub</span>
-      </a>
     </div>
     <span className="font-mono">Cutter-Sanborn · PHA</span>
   </div>
